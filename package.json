@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/karismanabil/apprestapi/issues"
   },
-  "homepage": "https://github.com/karismanabil/apprestapi#readme"
+  "homepage": "https://github.com/karismanabil/apprestapi#readme",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "mysql": "^2.18.1"
+  }
 }
