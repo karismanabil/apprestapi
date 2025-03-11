@@ -37,18 +37,45 @@ exports.tampilberdasarkanid = function(req, res){
 
 // menambahkan data mahasiswa
 exports.tambahmahasiswa = function (req,res){
+    console.log("Data yang diterima:", req.body); // Cek apakah data masuk
+
+    var { nim, nama, jurusan } = req.body;
+
+    if (!nim || !nama || !jurusan) {
+        return res.status(400).json({ message: "Semua data (nim, nama, jurusan) harus diisi!" });
+    }
+
+
+    connection.query(
+        'INSERT INTO mahasiswa (nim, nama, jurusan) VALUES (?, ?, ?)',
+        [nim, nama, jurusan],
+        function (error, results) {
+            if (error) {
+                console.error("Error executing query:", error);
+                return res.status(500).json({ message: "Gagal menambahkan data!", error });
+            } 
+            console.log("Data berhasil ditambahkan:", results);
+            return res.status(201).json({ message: "Berhasil menambahkan data!", insertedId: results.insertId });
+        }
+    );
+};
+
+// mengubah data berdasarkan id
+exports.ubahmahasiswa = function(req, res){
+    var id = req.body.id_mahasiswa;
     var nim = req.body.nim;
     var nama = req.body.nama;
     var jurusan = req.body.jurusan;
 
-    connection.query('INSET INTO mahasiswa (nim,nama,jurusan) VALUES (?,?,?)',
-    [nim,nama,jurusan],
+    connection.query('UPDATE mahasiswa SET nim=?, nama=?, jurusan=? WHERE id_mahasiswa=?',[nim, nama, jurusan, id],
         function(error, rows, fields){
             if(error){
                 console.log(error);
-            }else{
-                response.ok("Berhasil menambahkan data!",res);
+            }
+            else{
+                response.ok("Berhasil Ubah Data",res)
             }
         }
     );
+
 }
